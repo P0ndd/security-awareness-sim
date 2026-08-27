@@ -1,0 +1,12 @@
+# ไฟล์ลับ / PII — ห้ามขึ้น git
+config.json
+employees.csv
+campaign_links.csv
+clicks.csv
+AUTHORIZATION.txt
+
+# ไฟล์ที่สร้างขึ้นเอง / ไม่จำเป็นต้องเก็บใน repo
+tunnel.log
+cloudflared.exe
+__pycache__/
+*.pyc

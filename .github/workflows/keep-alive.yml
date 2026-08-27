@@ -1,0 +1,28 @@
+name: keep-alive
+
+# ปลุก Render free ไม่ให้สปินดาวน์ (หลับหลังไม่มีทราฟฟิก ~15 นาที)
+# ยิงที่ "/" เท่านั้น — ไม่ยิง /t/<รหัส> เพื่อไม่ให้เกิดคลิกปลอมใน clicks.csv
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"    # ทุก ~10 นาที (GitHub อาจดีเลย์ได้บ้าง ไม่เป๊ะ — เพียงพอสำหรับ keep-alive)
+  workflow_dispatch: {}         # กดรันเองได้จากแท็บ Actions
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Render root
+        run: |
+          URL="${{ vars.RENDER_URL }}"
+          if [ -z "$URL" ]; then
+            echo "ยังไม่ได้ตั้งค่า RENDER_URL — ไปที่ Settings > Secrets and variables > Actions > Variables แล้วเพิ่มตัวแปร RENDER_URL"
+            exit 0
+          fi
+          BASE="${URL%/}"
+          echo "Pinging $BASE/"
+          if curl -fsS --retry 3 --max-time 90 "$BASE/" -o /dev/null; then
+            echo "ok: service ตื่นอยู่"
+          else
+            echo "warn: ping ไม่ผ่าน (อาจกำลัง cold start) — จะลองใหม่รอบหน้า"
+          fi

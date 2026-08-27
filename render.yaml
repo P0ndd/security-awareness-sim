@@ -1,0 +1,18 @@
+# Render Blueprint — deploy หน้า tracking (server.py) เป็น web service
+# ใช้เมื่อ repo root คือโฟลเดอร์ security-awareness-sim
+#
+# วิธีใช้:
+#   1) push โค้ดขึ้น GitHub
+#   2) Render Dashboard > New > Blueprint > เลือก repo นี้
+#   3) Render จะสร้าง service + สุ่ม ADMIN_TOKEN ให้ (ดูได้ที่แท็บ Environment)
+services:
+  - type: web
+    name: bmu-awareness
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn server:app --bind 0.0.0.0:$PORT
+    envVars:
+      # token สำหรับดาวน์โหลดผลที่ /export?token=...  (Render สุ่มให้อัตโนมัติ)
+      - key: ADMIN_TOKEN
+        generateValue: true

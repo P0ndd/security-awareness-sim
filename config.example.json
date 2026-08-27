@@ -1,0 +1,18 @@
+{
+  "_comment": "คัดลอกไฟล์นี้เป็น config.json แล้วกรอกค่าจริง. อย่า commit config.json ขึ้น git.",
+  "thsms": {
+    "api_endpoint": "https://thsms.com/api/v2/send",
+    "api_token": "PASTE_YOUR_THSMS_TOKEN_HERE",
+    "sender": "BMU-IT"
+  },
+  "campaign": {
+    "base_url": "https://awareness.your-company-domain.com",
+    "message_template": "[IT Notice] ระบบตรวจพบการเข้าสู่ระบบผิดปกติในบัญชีของคุณ กรุณายืนยันตัวตนภายในวันนี้: {link}"
+  },
+  "notes": [
+    "thsms.api_endpoint / field names ให้ยืนยันกับหน้า API ของ THSMS ในบัญชีคุณ (v2 อาจใช้ from/to/text)",
+    "sender ต้องเป็นชื่อผู้ส่งที่ลงทะเบียนกับ THSMS แล้ว",
+    "campaign.base_url = โดเมน/ลิงก์ที่พนักงานจะคลิกเข้า (tunnel URL หรือ short link)",
+    "message_template ใช้บริบทภายในองค์กรเท่านั้น ห้ามปลอมเป็นธนาคาร/หน่วยงานรัฐ"
+  ]
+}

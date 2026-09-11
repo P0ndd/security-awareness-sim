@@ -52,6 +52,7 @@ def build_link(base_url, employee_id):
 
 
 def send_sms(cfg, phone, message):
+    """THSMS API v2: POST /api/send-sms (Bearer token), ตอบกลับเป็น JSON"""
     import requests
     thsms = cfg["thsms"]
     resp = requests.post(
@@ -60,7 +61,7 @@ def send_sms(cfg, phone, message):
             "Authorization": f"Bearer {thsms['api_token']}",
             "Content-Type": "application/json",
         },
-        json={"from": thsms["sender"], "to": phone, "text": message},
+        json={"sender": thsms["sender"], "msisdn": [phone], "message": message},
         timeout=20,
     )
     return resp.status_code, resp.text
@@ -102,7 +103,7 @@ def main():
         if not ok:
             sys.exit(f"❌ ปฏิเสธการส่งจริง: {reason}\n"
                      f"   กรอก AUTHORIZATION.txt ให้ครบก่อน หรือรันแบบ dry-run (ไม่ใส่ --live)")
-        token = cfg["thsms"]["api_token"]
+        token = cfg["thsms"].get("api_token", "")
         if not token or token.startswith("PASTE_"):
             sys.exit("❌ ยังไม่ได้ตั้งค่า api_token ใน config.json")
 
@@ -114,8 +115,9 @@ def main():
         message = template.format(link=t["link"])
         if args.live:
             code, body = send_sms(cfg, t["phone"], message)
-            status = "OK" if code == 200 else f"FAIL({code})"
-            print(f"[{status}] {t['employee_id']} {t['phone']}: {body[:80]}")
+            ok_send = code == 200 and '"success":true' in "".join(body.split())
+            status = "OK" if ok_send else f"FAIL({code})"
+            print(f"[{status}] {t['employee_id']} {t['phone']}: {body.strip()[:160]}")
         else:
             print(f"[DRY] {t['employee_id']} {t['phone']}")
             print(f"      ข้อความ: {message}\n")

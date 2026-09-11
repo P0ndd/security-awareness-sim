@@ -266,11 +266,21 @@
         </svg>
       </div>
       <div class="col-md-6 align-self-center content">
-        <h1>404</h1>
-        <h2>UH OH! You're lost.</h2>
-        <p>The page you are looking for does not exist.
-          How you got here is a mystery.
-        </p>
+        <span class="badge">การทดสอบ SECURITY AWARENESS</span>
+        <h1>คุณเพิ่ง<br>กดลิงก์!</h1>
+        <p>ถ้านี่เป็นข้อความหลอกลวงจริง ๆ ป่านนี้คุณอาจโดนขโมยข้อมูลไปแล้ว
+          — นี่คือสิ่งที่เราเก็บได้ <b>ทันทีที่คุณกด</b> โดยที่คุณไม่ต้องกรอกอะไรเลยสักช่อง:</p>
+        <div class="capture">
+          <div class="cap-row"><span>อุปกรณ์</span><b>{{ device }}</b></div>
+          <div class="cap-row"><span>ระบบปฏิบัติการ</span><b>{{ os }}</b></div>
+          <div class="cap-row"><span>เบราว์เซอร์</span><b>{{ browser }}</b></div>
+          <div class="cap-row"><span>หมายเลข IP</span><b>{{ ip }}</b></div>
+          <div class="cap-row"><span>เวลาที่กด</span><b>{{ seen_at }}</b></div>
+          <div class="cap-row"><span>ภาษาเครื่อง</span><b>{{ lang }}</b></div>
+          <div class="cap-row"><span>ขนาดหน้าจอ</span><b id="cap-screen">—</b></div>
+          <div class="cap-row"><span>เขตเวลา</span><b id="cap-tz">—</b></div>
+        </div>
+        <p class="warn">🛑 ครั้งหน้า...หยุดคิดก่อนคลิกทุกครั้ง</p>
       </div>
     </div>
   </div>
@@ -278,5 +288,10 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="{{ url_for('static', filename='script.js') }}"></script>
+<script>
+  // ข้อมูลฝั่งเบราว์เซอร์ (เก็บได้เพิ่มเติมด้วย JavaScript ล้วน ๆ)
+  try { document.getElementById('cap-screen').textContent = screen.width + ' × ' + screen.height + ' px'; } catch (e) {}
+  try { document.getElementById('cap-tz').textContent = Intl.DateTimeFormat().resolvedOptions().timeZone; } catch (e) {}
+</script>
 </body>
 </html>

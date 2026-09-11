@@ -1,7 +1,7 @@
 {
   "_comment": "คัดลอกไฟล์นี้เป็น config.json แล้วกรอกค่าจริง. อย่า commit config.json ขึ้น git.",
   "thsms": {
-    "api_endpoint": "https://thsms.com/api/v2/send",
+    "api_endpoint": "https://thsms.com/api/send-sms",
     "api_token": "PASTE_YOUR_THSMS_TOKEN_HERE",
     "sender": "BMU-IT"
   },
